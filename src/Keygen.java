@@ -46,7 +46,6 @@ public class Keygen extends JFrame{
                     }
                     if(i == 9 || i == 10) {
                         key[i] = (char) ((Math.random() * (70 - 65)) + 65);
-                        System.out.println(key[i]);
                     }
                 }
                 String newKey = String.valueOf(key);
@@ -67,7 +66,6 @@ public class Keygen extends JFrame{
                     }
                     if(i == 9 || i == 10) {
                         key[i] = (char) ((Math.random() * (76 - 71)) + 71);
-                        System.out.println(key[i]);
                     }
                 }
                 String newKey = String.valueOf(key);
@@ -88,7 +86,6 @@ public class Keygen extends JFrame{
                     }
                     if(i == 9 || i == 10) {
                         key[i] = (char) ((Math.random() * (82 - 77)) + 77);
-                        System.out.println(key[i]);
                     }
                 }
                 String newKey = String.valueOf(key);
