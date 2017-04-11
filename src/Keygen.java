@@ -5,9 +5,6 @@ import java.util.prefs.Preferences;
 public class Keygen extends JFrame{
 
     Keygen(){
-        //String test = Preferences.userRoot().node("prefs").get("Dima", "defaultValue");
-        //System.out.println("Test: " + test);
-
 
         JFrame formActivation = new JFrame("KEYGEN");
         formActivation.setBounds(170, 250, 170, 250);
