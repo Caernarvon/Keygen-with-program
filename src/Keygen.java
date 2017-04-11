@@ -32,6 +32,7 @@ public class Keygen extends JFrame{
 
 
         buttonActivate.addActionListener((a) -> {
+            //9'th and 10'th figures are responsible for access levels
             if (radioButton.isSelected()) {
                 char[] nameArray = keyArea.getText().toCharArray();
                 char figure = (char) ((int)nameArray[nameArray.length - 1] - 32);
