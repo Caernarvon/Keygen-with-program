@@ -6,7 +6,7 @@ import java.util.prefs.Preferences;
 /*
 Program with different encoding level.
 To take an access to any level you need to write key to activation form.
-Required key is needed to be formed by definative algorithm depending on preffered encoding access level.
+Required key is needed to be formed by certain algorithm depending on preffered encoding access level.
 Program saves it's status even when closing and re-opening one more time.
 */
 

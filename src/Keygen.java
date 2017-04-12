@@ -2,10 +2,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.prefs.Preferences;
 
+/*
+Keygen generates key depending on chosen radiobutton and entered name.
+Anyone new generated key is always not similar with previous key.
+Several letters are generated in a certain range, they're used later in program activation form.
+*/
+
+
 public class Keygen extends JFrame{
 
     Keygen(){
-
+        // initializing form and components
         JFrame formActivation = new JFrame("KEYGEN");
         formActivation.setBounds(170, 250, 170, 250);
         formActivation.setLayout(new BorderLayout());
@@ -28,6 +35,7 @@ public class Keygen extends JFrame{
         radioButton.setSelected(true);
 
 
+        // Key generator algorithm with different range to different radiobutton
         buttonActivate.addActionListener((a) -> {
             //9'th and 10'th figures are responsible for access levels
             if (radioButton.isSelected()) {
@@ -87,6 +95,7 @@ public class Keygen extends JFrame{
                     }
                 }
                 String newKey = String.valueOf(key);
+                // print generated key
                 keyArea.setText(newKey);
             }
         });
