@@ -3,10 +3,10 @@ import java.awt.*;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 /*
-Program with different encoding level.
-To take an access to any level you need to write key to activation form.
-Required key is needed to be formed by certain algorithm depending on preffered encoding access level.
-Program saves it's status even when closing and re-opening one more time.
+ * Program with different encoding level.
+ * To take an access to any level you need to write key to activation form.
+ * Required key is needed to be formed by certain algorithm depending on preffered encoding access level.
+ * Program saves it's status even when closing and re-opening one more time.
 */
 public class Windows extends JFrame {
     // initializing static elements to have an access from all places in class

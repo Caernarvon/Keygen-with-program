@@ -2,9 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.prefs.Preferences;
 /*
-Keygen generates key depending on chosen radiobutton and entered name.
-Anyone new generated key is always not similar with previous key.
-Several letters are generated in a certain range, they're used later in program activation form.
+ * Keygen generates key depending on chosen radiobutton and entered name.
+ * Anyone new generated key is always not similar with previous key.
+ * Several letters are generated in a certain range, they're used later in program activation form.
 */
 public class Keygen extends JFrame{
     Keygen(){
