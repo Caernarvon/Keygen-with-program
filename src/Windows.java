@@ -3,7 +3,16 @@ import java.awt.*;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
+/*
+Program with different encoding level.
+To take an access to any level you need to write key to activation form.
+Required key is needed to be formed by definative algorithm depending on preffered encoding access level.
+Program saves it's status even when closing and re-opening one more time.
+*/
+
+
 public class Windows extends JFrame {
+    // initializing static elements to have an access from all places in class
     private static Preferences prefs = Preferences.userRoot().node("prefs");
     private static JButton buttonDef = new JButton("Default encode");
     private static JButton buttonLow = new JButton("Low \n encode");
@@ -12,9 +21,11 @@ public class Windows extends JFrame {
     private static JTextArea keyArea = new JTextArea(7, 10);
     private static JFrame formActivation = new JFrame("Activation");
     private static String key;
+    private static JFrame formMain = new JFrame("ZX");
+    private static JComboBox combo;
 
     private Windows() {
-        JFrame formMain = new JFrame("ZX");
+        // default form that gives opportunity to choose an encoding level
         formMain.setSize(200, 300);
         final JPanel content = new JPanel(new GridLayout(2, 1, 1, 1));
         final JPanel content2 = new JPanel(new GridLayout(2, 1, 1, 1));
@@ -41,402 +52,23 @@ public class Windows extends JFrame {
         // check serial from Preferences
         setToPreferredAccessByKey(prefs.get("serial", ""));
 
+        // make forms depending on chosen button
         buttonDef.addActionListener((e) -> {
-            JFrame formDef = new JFrame("Default encode");
-            formDef.setBounds(300, 300, 300, 300);
-            formDef.setLayout(new BorderLayout());
-            formDef.setDefaultCloseOperation(EXIT_ON_CLOSE);
-            JTextArea bfrTr = new JTextArea(7, 30);
-            JTextArea aftrTr = new JTextArea(8, 30);
-            JButton buttonTr = new JButton("Encode");
-            JButton buttonDtr = new JButton("Decode");
-            String[] elements = new String[]{"1"};
-            JComboBox combo = new JComboBox(elements);
-            combo.setSelectedIndex(0);
-            combo.setSize(400, 400);
-            Font font = new Font("", Font.PLAIN, 18);
-            formDef.add(combo, BorderLayout.CENTER);
-            formDef.add(bfrTr, BorderLayout.NORTH);
-            formDef.add(buttonTr, BorderLayout.WEST);
-            formDef.add(buttonDtr, BorderLayout.EAST);
-            formDef.add(aftrTr, BorderLayout.SOUTH);
-            buttonTr.setFont(font);
-            buttonTr.setBackground(Color.WHITE);
-            buttonDtr.setFont(font);
-            buttonDtr.setBackground(Color.WHITE);
-            combo.setFont(font);
-            combo.setBackground(Color.WHITE);
-            bfrTr.setWrapStyleWord(true);
-            aftrTr.setWrapStyleWord(true);
-            bfrTr.setLineWrap(true);
-            aftrTr.setLineWrap(true);
-            formDef.setVisible(true);
-            formMain.setVisible(false);
-
-            // default encoding form
-            buttonTr.addActionListener((a) -> {
-                int level = combo.getSelectedIndex() + 1;
-                String text = bfrTr.getText();
-                int j = 0;
-                char[] charText = text.toCharArray();
-                if (text.isEmpty()) {
-                    aftrTr.setText("Error! Enter something!");
-                }
-                if (text.length() > 0) {
-                    char[] chars = new char[charText.length * level];
-                    for (int count = 0; count < chars.length; count++) {
-                        chars[count] = ' ';
-                    }
-                    for (int i = 0; i < chars.length; ) {
-                        int n = charText[j];
-                        if (level == 1) {
-                            int k = n * 2;
-                            char ch2 = (char) k;
-                            chars[i] = ch2;
-                            j++;
-                            i++;
-                        }
-                        if (level == 2) {
-                            int g1 = n * 2;
-                            int g2 = n + charText.length;
-                            char ch3 = (char) g1;
-                            char gh3 = (char) g2;
-                            chars[i] = ch3;
-                            chars[i + 1] = gh3;
-                            j++;
-                            i = i + 2;
-                        }
-                        if (level == 3) {
-                            int h1 = n * 2;
-                            int h2 = n + charText.length;
-                            int h3 = 'a' + charText.length;
-                            char hh4 = (char) h1;
-                            char jh4 = (char) h2;
-                            char kh4 = (char) h3;
-                            chars[i] = hh4;
-                            chars[i + 1] = jh4;
-                            chars[i + 2] = kh4;
-                            j++;
-                            i = i + 3;
-                        }
-                    }
-                    String stringValueOf = String.valueOf(chars);
-                    aftrTr.setText(stringValueOf);
-                    bfrTr.setText("");
-                }
-            });
-
-            buttonDtr.addActionListener((a) -> {
-                int level = combo.getSelectedIndex() + 1;
-                String text = aftrTr.getText();
-                char[] charText = text.toCharArray();
-                int k = 0;
-                if (text.isEmpty()) {
-                    aftrTr.setText("Error! Nothing to decode!");
-                }
-                char[] chars = new char[charText.length / level];
-                if (charText.length > 0) {
-                    for (int i = 0; i < chars.length * level; ) {
-                        if (level == 1) {
-                            char ch2 = charText[i];
-                            int symbol1 = (char) ch2;
-                            symbol1 = symbol1 / 2;
-                            char symbolOne = (char) symbol1;
-                            chars[i] = symbolOne;
-                            k++;
-                            i++;
-                        }
-                        if (level == 2) {
-                            char ch2 = charText[i];
-                            int symbol1 = (char) ch2;
-                            symbol1 = symbol1 / 2;
-                            char symbolOne = (char) symbol1;
-                            chars[k] = symbolOne;
-                            k++;
-                            i = i + 2;
-                        }
-                        if (level == 3) {
-                            char ch2 = charText[i];
-                            int symbol1 = (char) ch2;
-                            symbol1 = symbol1 / 2;
-                            char symbolOne = (char) symbol1;
-                            chars[k] = symbolOne;
-                            k++;
-                            i = i + 3;
-                        }
-                    }
-                    String stringValueOf = String.valueOf(chars);
-                    bfrTr.setText(stringValueOf);
-                    aftrTr.setText("");
-                }
-            });
+             makeForm(1);
         });
 
         buttonLow.addActionListener((e) -> {
-            JFrame formLow = new JFrame("Low encode");
-            formLow.setBounds(300, 300, 300, 300);
-            formLow.setLayout(new BorderLayout());
-            formLow.setDefaultCloseOperation(EXIT_ON_CLOSE);
-            JTextArea bfrTr = new JTextArea(7, 30);
-            JTextArea aftrTr = new JTextArea(8, 30);
-            JButton buttonTr = new JButton("Encode");
-            JButton buttonDtr = new JButton("Decode");
-            String[] elements = new String[]{"1", "2"};
-            JComboBox combo = new JComboBox(elements);
-            combo.setSelectedIndex(1);
-            combo.setSize(400, 400);
-            Font font = new Font("", Font.PLAIN, 18);
-            formLow.add(combo, BorderLayout.CENTER);
-            formLow.add(bfrTr, BorderLayout.NORTH);
-            formLow.add(buttonTr, BorderLayout.WEST);
-            formLow.add(buttonDtr, BorderLayout.EAST);
-            formLow.add(aftrTr, BorderLayout.SOUTH);
-            buttonTr.setFont(font);
-            buttonTr.setBackground(Color.WHITE);
-            buttonDtr.setFont(font);
-            buttonDtr.setBackground(Color.WHITE);
-            combo.setFont(font);
-            combo.setBackground(Color.WHITE);
-            bfrTr.setWrapStyleWord(true);
-            aftrTr.setWrapStyleWord(true);
-            bfrTr.setLineWrap(true);
-            aftrTr.setLineWrap(true);
-            formLow.setVisible(true);
-            formMain.setVisible(false);
-
-            // low encoding form
-            buttonTr.addActionListener((a) -> {
-                int level = combo.getSelectedIndex() + 1;
-                String text = bfrTr.getText();
-                int j = 0;
-                char[] charText = text.toCharArray();
-                if (text.isEmpty()) {
-                    aftrTr.setText("Error! Enter something!");
-                }
-                if (text.length() > 0) {
-                    char[] chars = new char[charText.length * level];
-                    for (int count = 0; count < chars.length; count++) {
-                        chars[count] = ' ';
-                    }
-                    for (int i = 0; i < chars.length; ) {
-                        int n = charText[j];
-                        if (level == 1) {
-                            int k = n * 2;
-                            char ch2 = (char) k;
-                            chars[i] = ch2;
-                            j++;
-                            i++;
-                        }
-                        if (level == 2) {
-                            int g1 = n * 2;
-                            int g2 = n + charText.length;
-                            char ch3 = (char) g1;
-                            char gh3 = (char) g2;
-                            chars[i] = ch3;
-                            chars[i + 1] = gh3;
-                            j++;
-                            i = i + 2;
-                        }
-                        if (level == 3) {
-                            int h1 = n * 2;
-                            int h2 = n + charText.length;
-                            int h3 = 'a' + charText.length;
-                            char hh4 = (char) h1;
-                            char jh4 = (char) h2;
-                            char kh4 = (char) h3;
-                            chars[i] = hh4;
-                            chars[i + 1] = jh4;
-                            chars[i + 2] = kh4;
-                            j++;
-                            i = i + 3;
-                        }
-                    }
-                    String stringValueOf = String.valueOf(chars);
-                    aftrTr.setText(stringValueOf);
-                    bfrTr.setText("");
-                }
-            });
-
-            buttonDtr.addActionListener((a) -> {
-                int level = combo.getSelectedIndex() + 1;
-                String text = aftrTr.getText();
-                char[] charText = text.toCharArray();
-                int k = 0;
-                if (text.isEmpty()) {
-                    aftrTr.setText("Error! Nothing to decode!");
-                }
-                char[] chars = new char[charText.length / level];
-                if (charText.length > 0) {
-                    for (int i = 0; i < chars.length * level; ) {
-                        if (level == 1) {
-                            char ch2 = charText[i];
-                            int symbol1 = (char) ch2;
-                            symbol1 = symbol1 / 2;
-                            char symbolOne = (char) symbol1;
-                            chars[i] = symbolOne;
-                            k++;
-                            i++;
-                        }
-                        if (level == 2) {
-                            char ch2 = charText[i];
-                            int symbol1 = (char) ch2;
-                            symbol1 = symbol1 / 2;
-                            char symbolOne = (char) symbol1;
-                            chars[k] = symbolOne;
-                            k++;
-                            i = i + 2;
-                        }
-                        if (level == 3) {
-                            char ch2 = charText[i];
-                            int symbol1 = (char) ch2;
-                            symbol1 = symbol1 / 2;
-                            char symbolOne = (char) symbol1;
-                            chars[k] = symbolOne;
-                            k++;
-                            i = i + 3;
-                        }
-                    }
-                    String stringValueOf = String.valueOf(chars);
-                    bfrTr.setText(stringValueOf);
-                    aftrTr.setText("");
-                }
-            });
+            makeForm(2);
         });
 
-        // middle encoding form
         buttonMid.addActionListener((e) -> {
-            JFrame formMid = new JFrame("Middle encode");
-            formMid.setBounds(300, 300, 300, 300);
-            formMid.setLayout(new BorderLayout());
-            formMid.setDefaultCloseOperation(EXIT_ON_CLOSE);
-            JTextArea bfrTr = new JTextArea(7, 30);
-            JTextArea aftrTr = new JTextArea(8, 30);
-            JButton buttonTr = new JButton("Encode");
-            JButton buttonDtr = new JButton("Decode");
-            String[] elements = new String[]{"1", "2", "3"};
-            JComboBox combo = new JComboBox(elements);
-            combo.setSelectedIndex(2);
-            combo.setSize(400, 400);
-            Font font = new Font("", Font.PLAIN, 18);
-            formMid.add(combo, BorderLayout.CENTER);
-            formMid.add(bfrTr, BorderLayout.NORTH);
-            formMid.add(buttonTr, BorderLayout.WEST);
-            formMid.add(buttonDtr, BorderLayout.EAST);
-            formMid.add(aftrTr, BorderLayout.SOUTH);
-            buttonTr.setFont(font);
-            buttonTr.setBackground(Color.WHITE);
-            buttonDtr.setFont(font);
-            buttonDtr.setBackground(Color.WHITE);
-            combo.setFont(font);
-            combo.setBackground(Color.WHITE);
-            bfrTr.setWrapStyleWord(true);
-            aftrTr.setWrapStyleWord(true);
-            bfrTr.setLineWrap(true);
-            aftrTr.setLineWrap(true);
-            formMid.setVisible(true);
-            formMain.setVisible(false);
-
-            buttonTr.addActionListener((a) -> {
-                int level = combo.getSelectedIndex() + 1;
-                String text = bfrTr.getText();
-                int j = 0;
-                char[] charText = text.toCharArray();
-                if (text.isEmpty()) {
-                    aftrTr.setText("Error! Enter something!");
-                }
-                if (text.length() > 0) {
-                    char[] chars = new char[charText.length * level];
-                    for (int count = 0; count < chars.length; count++) {
-                        chars[count] = ' ';
-                    }
-                    for (int i = 0; i < chars.length; ) {
-                        int n = charText[j];
-                        if (level == 1) {
-                            int k = n * 2;
-                            char ch2 = (char) k;
-                            chars[i] = ch2;
-                            j++;
-                            i++;
-                        }
-                        if (level == 2) {
-                            int g1 = n * 2;
-                            int g2 = n + charText.length;
-                            char ch3 = (char) g1;
-                            char gh3 = (char) g2;
-                            chars[i] = ch3;
-                            chars[i + 1] = gh3;
-                            j++;
-                            i = i + 2;
-                        }
-                        if (level == 3) {
-                            int h1 = n * 2;
-                            int h2 = n + charText.length;
-                            int h3 = 'a' + charText.length;
-                            char hh4 = (char) h1;
-                            char jh4 = (char) h2;
-                            char kh4 = (char) h3;
-                            chars[i] = hh4;
-                            chars[i + 1] = jh4;
-                            chars[i + 2] = kh4;
-                            j++;
-                            i = i + 3;
-                        }
-                    }
-                    String stringValueOf = String.valueOf(chars);
-                    aftrTr.setText(stringValueOf);
-                    bfrTr.setText("");
-                }
-            });
-
-            buttonDtr.addActionListener((a) -> {
-                int level = combo.getSelectedIndex() + 1;
-                String text = aftrTr.getText();
-                char[] charText = text.toCharArray();
-                int k = 0;
-                if (text.isEmpty()) {
-                    aftrTr.setText("Error! Nothing to decode!");
-                }
-                char[] chars = new char[charText.length / level];
-                if (charText.length > 0) {
-                    for (int i = 0; i < chars.length * level; ) {
-                        if (level == 1) {
-                            char ch2 = charText[i];
-                            int symbol1 = (char) ch2;
-                            symbol1 = symbol1 / 2;
-                            char symbolOne = (char) symbol1;
-                            chars[i] = symbolOne;
-                            k++;
-                            i++;
-                        }
-                        if (level == 2) {
-                            char ch2 = charText[i];
-                            int symbol1 = (char) ch2;
-                            symbol1 = symbol1 / 2;
-                            char symbolOne = (char) symbol1;
-                            chars[k] = symbolOne;
-                            k++;
-                            i = i + 2;
-                        }
-                        if (level == 3) {
-                            char ch2 = charText[i];
-                            int symbol1 = (char) ch2;
-                            symbol1 = symbol1 / 2;
-                            char symbolOne = (char) symbol1;
-                            chars[k] = symbolOne;
-                            k++;
-                            i = i + 3;
-                        }
-                    }
-                    String stringValueOf = String.valueOf(chars);
-                    bfrTr.setText(stringValueOf);
-                    aftrTr.setText("");
-                }
-            });
+            makeForm(3);
         });
 
-        // Highest encode form
+        // highest encode form
         // TODO encoding algorithm
         buttonHigh.addActionListener((e) -> {
+            // encoding form with password, not just converting one symbol to two etc.
             JFrame formHigh = new JFrame("Highest encode");
             formHigh.setBounds(350, 350, 350, 350);
             formHigh.setLayout(new BorderLayout());
@@ -556,11 +188,12 @@ public class Windows extends JFrame {
         buttonHigh.setVisible(false);
     }
 
+    // get access by key from registre/activation form
     public void setToPreferredAccessByKey(String key) {
+        // make all forms aren't visible
         setToDefaultAccess();
-        String key2 = key;
         if(!key.isEmpty() && key.length() == 17) {
-            char[] keyCheck = key2.toCharArray();
+            char[] keyCheck = key.toCharArray();
             int first = keyCheck[9];
             int second = keyCheck[10];
             if(first > 64 && first < 71 && second > 64 && second < 71 ) {
@@ -585,9 +218,11 @@ public class Windows extends JFrame {
                 formActivation.setVisible(false);
             }
         }
+        //
         else {
             keyArea.setText("not activated");
             clearPreferences();
+            formActivation.setVisible(false);
         }
     }
 
@@ -595,6 +230,9 @@ public class Windows extends JFrame {
         setToPreferredAccessByKey(serial);
     }
 
+
+    // clear preferences when key isn't right, method can be deleted from activation form if's
+    // but it allows to set buttons to invisible easely
     public void clearPreferences() {
         try {
             prefs.clear();
@@ -604,6 +242,169 @@ public class Windows extends JFrame {
         }
     }
 
+
+    // method makes form depending on level, it's exists because code of forms activated by buttons is nearly similar
+    // and here is no to write different code for anyone form
+    public void makeForm(int lvl){
+        JFrame formDef = new JFrame("Encode");
+        formDef.setBounds(300, 300, 300, 300);
+        formDef.setLayout(new BorderLayout());
+        formDef.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        JTextArea bfrTr = new JTextArea(7, 30);
+        JTextArea aftrTr = new JTextArea(8, 30);
+        JButton buttonTr = new JButton("Encode");
+        JButton buttonDtr = new JButton("Decode");
+        Font font = new Font("", Font.PLAIN, 18);
+        formDef.add(bfrTr, BorderLayout.NORTH);
+        formDef.add(buttonTr, BorderLayout.WEST);
+        formDef.add(buttonDtr, BorderLayout.EAST);
+        formDef.add(aftrTr, BorderLayout.SOUTH);
+        buttonTr.setFont(font);
+        buttonTr.setBackground(Color.WHITE);
+        buttonDtr.setFont(font);
+        buttonDtr.setBackground(Color.WHITE);
+        bfrTr.setWrapStyleWord(true);
+        aftrTr.setWrapStyleWord(true);
+        bfrTr.setLineWrap(true);
+        aftrTr.setLineWrap(true);
+        formDef.setVisible(true);
+        formMain.setVisible(false);
+        // that's the only one different GUI element in all forms
+        // encoding access level depends on chosen level
+        if(lvl == 1) {
+            String[] elements = new String[]{"1"};
+            combo = new JComboBox(elements);
+            combo.setSelectedIndex(0);
+            combo.setSize(400, 400);
+            combo.setFont(font);
+            combo.setBackground(Color.WHITE);
+            formDef.add(combo, BorderLayout.CENTER);
+        }
+        if(lvl == 2) {
+            String[] elements = new String[]{"1", "2"};
+            combo = new JComboBox(elements);
+            combo.setSelectedIndex(0);
+            combo.setSize(400, 400);
+            combo.setFont(font);
+            combo.setBackground(Color.WHITE);
+            formDef.add(combo, BorderLayout.CENTER);
+        }
+        if(lvl == 3) {
+            String[] elements = new String[]{"1", "2", "3"};
+            combo = new JComboBox(elements);
+            combo.setSelectedIndex(0);
+            combo.setSize(400, 400);
+            combo.setFont(font);
+            combo.setBackground(Color.WHITE);
+            combo = new JComboBox(elements);
+            formDef.add(combo, BorderLayout.CENTER);
+        }
+
+
+        // encoding algorithm for def, low, mid forms
+        buttonTr.addActionListener((a) -> {
+            int level = combo.getSelectedIndex() + 1;
+            String text = bfrTr.getText();
+            int j = 0;
+            char[] charText = text.toCharArray();
+            if (text.isEmpty()) {
+                aftrTr.setText("Error! Enter something!");
+            }
+            if (text.length() > 0) {
+                char[] chars = new char[charText.length * level];
+                for (int count = 0; count < chars.length; count++) {
+                    chars[count] = ' ';
+                }
+                for (int i = 0; i < chars.length; ) {
+                    int n = charText[j];
+                    if (level == 1) {
+                        int k = n * 2;
+                        char ch2 = (char) k;
+                        chars[i] = ch2;
+                        j++;
+                        i++;
+                    }
+                    if (level == 2) {
+                        int g1 = n * 2;
+                        int g2 = n + charText.length;
+                        char ch3 = (char) g1;
+                        char gh3 = (char) g2;
+                        chars[i] = ch3;
+                        chars[i + 1] = gh3;
+                        j++;
+                        i = i + 2;
+                    }
+                    if (level == 3) {
+                        int h1 = n * 2;
+                        int h2 = n + charText.length;
+                        int h3 = 'a' + charText.length;
+                        char hh4 = (char) h1;
+                        char jh4 = (char) h2;
+                        char kh4 = (char) h3;
+                        chars[i] = hh4;
+                        chars[i + 1] = jh4;
+                        chars[i + 2] = kh4;
+                        j++;
+                        i = i + 3;
+                    }
+                }
+                String stringValueOf = String.valueOf(chars);
+                aftrTr.setText(stringValueOf);
+                bfrTr.setText("");
+            }
+        });
+
+        // decoding algorithm for def, low, mid forms
+        buttonDtr.addActionListener((a) -> {
+            int level = combo.getSelectedIndex() + 1;
+            String text = aftrTr.getText();
+            char[] charText = text.toCharArray();
+            int k = 0;
+            if (text.isEmpty()) {
+                aftrTr.setText("Error! Nothing to decode!");
+            }
+            char[] chars = new char[charText.length / level];
+            if (charText.length > 0) {
+                for (int i = 0; i < chars.length * level; ) {
+                    if (level == 1) {
+                        char ch2 = charText[i];
+                        int symbol1 = (char) ch2;
+                        symbol1 = symbol1 / 2;
+                        char symbolOne = (char) symbol1;
+                        chars[i] = symbolOne;
+                        k++;
+                        i++;
+                    }
+                    if (level == 2) {
+                        char ch2 = charText[i];
+                        int symbol1 = (char) ch2;
+                        symbol1 = symbol1 / 2;
+                        char symbolOne = (char) symbol1;
+                        chars[k] = symbolOne;
+                        k++;
+                        i = i + 2;
+                    }
+                    if (level == 3) {
+                        char ch2 = charText[i];
+                        int symbol1 = (char) ch2;
+                        symbol1 = symbol1 / 2;
+                        char symbolOne = (char) symbol1;
+                        chars[k] = symbolOne;
+                        k++;
+                        i = i + 3;
+                    }
+                }
+                String stringValueOf = String.valueOf(chars);
+                bfrTr.setText(stringValueOf);
+                aftrTr.setText("");
+            }
+        });
+
+    }
+
+
+    // can be used to make MD5 from serial key, it's can be used only if key isn't dynamic and it could be compared
+    // with other MD5 from other serial key, but it isn't used in my situation
     private String encode(String serial) {
         String result = "";
         try {
@@ -622,6 +423,7 @@ public class Windows extends JFrame {
     }
 
     public static void main(String[] args) {
+        // initializing form
         new Windows();
     }
 }
