@@ -2,15 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
-
 /*
 Program with different encoding level.
 To take an access to any level you need to write key to activation form.
 Required key is needed to be formed by certain algorithm depending on preffered encoding access level.
 Program saves it's status even when closing and re-opening one more time.
 */
-
-
 public class Windows extends JFrame {
     // initializing static elements to have an access from all places in class
     private static Preferences prefs = Preferences.userRoot().node("prefs");
@@ -56,11 +53,9 @@ public class Windows extends JFrame {
         buttonDef.addActionListener((e) -> {
              makeForm(1);
         });
-
         buttonLow.addActionListener((e) -> {
             makeForm(2);
         });
-
         buttonMid.addActionListener((e) -> {
             makeForm(3);
         });
@@ -118,7 +113,6 @@ public class Windows extends JFrame {
                 for (int i = 0; i < password.length; i++) {
                     symbol = password[i];
                     sum = sum + symbol;
-
                 }
                 sum = sum / password.length;
                 //System.out.println(sum);
@@ -157,7 +151,6 @@ public class Windows extends JFrame {
                 String stringValueOf = String.valueOf(chars);
                 bfrTr.setText(stringValueOf);
                 aftrTr.setText("");
-
             });
         });
 
@@ -170,7 +163,6 @@ public class Windows extends JFrame {
             JButton buttonActivate = new JButton("ACTIVATE");
             formActivation.add(keyArea, BorderLayout.NORTH);
             formActivation.add(buttonActivate, BorderLayout.SOUTH);
-
             formActivation.setVisible(true);
 
             buttonActivate.addActionListener((a) -> {
@@ -218,7 +210,6 @@ public class Windows extends JFrame {
                 formActivation.setVisible(false);
             }
         }
-        //
         else {
             keyArea.setText("not activated");
             clearPreferences();
@@ -230,7 +221,6 @@ public class Windows extends JFrame {
         setToPreferredAccessByKey(serial);
     }
 
-
     // clear preferences when key isn't right, method can be deleted from activation form if's
     // but it allows to set buttons to invisible easely
     public void clearPreferences() {
@@ -241,7 +231,6 @@ public class Windows extends JFrame {
             e.printStackTrace();
         }
     }
-
 
     // method makes form depending on level, it's exists because code of forms activated by buttons is nearly similar
     // and here is no to write different code for anyone form
@@ -299,7 +288,6 @@ public class Windows extends JFrame {
             combo = new JComboBox(elements);
             formDef.add(combo, BorderLayout.CENTER);
         }
-
 
         // encoding algorithm for def, low, mid forms
         buttonTr.addActionListener((a) -> {
@@ -399,9 +387,7 @@ public class Windows extends JFrame {
                 aftrTr.setText("");
             }
         });
-
     }
-
 
     // can be used to make MD5 from serial key, it's can be used only if key isn't dynamic and it could be compared
     // with other MD5 from other serial key, but it isn't used in my situation
@@ -418,7 +404,6 @@ public class Windows extends JFrame {
         } catch (java.security.NoSuchAlgorithmException e) {
             // catch exception
         }
-
         return result;
     }
 
